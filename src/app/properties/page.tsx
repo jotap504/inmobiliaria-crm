@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -16,7 +17,6 @@ import {
   Trash2
 } from 'lucide-react';
 import Navigation from '@/components/navigation';
-import { useRouter } from 'next/navigation';
 
 const mockProperties = [
   {
@@ -28,84 +28,85 @@ const mockProperties = [
     province: 'CABA',
     price: 120000,
     currency: 'USD',
-    property_type: 'apartment',
+    type: 'apartment',
     bedrooms: 2,
     bathrooms: 1,
-    surface_total: 65,
-    surface_covered: 60,
-    expenses: 8500,
+    surface: 45,
     status: 'available',
-    images: [],
-    assigned_agents: ['agent1', 'agent2'],
+    assigned_agents: ['1', '2'],
     created_at: '2024-01-15T10:00:00Z',
-    updated_at: '2024-01-15T10:00:00Z',
+    updated_at: '2024-01-20T14:30:00Z',
+    images: ['https://via.placeholder.com/400x300'],
+    features: ['balcon', 'laundry', 'parking'],
+    owner: {
+      name: 'Juan Pérez',
+      phone: '+54 11 5555-1234',
+      email: 'juan.perez@email.com'
+    }
   },
   {
     id: '2',
     title: 'Casa 3 ambientes - Belgrano',
-    description: 'Hermosa casa con jardín, piscina y quincho. Ideal para familias.',
+    description: 'Amplia casa con jardín, ideal para familias. A estrenar.',
     address: 'Juramento 2345',
     city: 'Capital Federal',
     province: 'CABA',
     price: 250000,
     currency: 'USD',
-    property_type: 'house',
+    type: 'house',
     bedrooms: 3,
     bathrooms: 2,
-    surface_total: 180,
-    surface_covered: 150,
-    expenses: 15000,
-    status: 'negotiation',
-    images: [],
-    assigned_agents: ['agent2'],
-    created_at: '2024-01-10T14:30:00Z',
-    updated_at: '2024-01-20T09:15:00Z',
+    surface: 120,
+    status: 'reserved',
+    assigned_agents: ['1'],
+    created_at: '2024-01-10T09:00:00Z',
+    updated_at: '2024-01-18T16:45:00Z',
+    images: ['https://via.placeholder.com/400x300'],
+    features: ['garden', 'garage', 'pool'],
+    owner: {
+      name: 'María González',
+      phone: '+54 11 5555-5678',
+      email: 'maria.gonzalez@email.com'
+    }
   },
   {
     id: '3',
     title: 'Local Comercial - Microcentro',
-    description: 'Local en zona de alto tránsito, perfecto para negocios.',
-    address: 'Florida 567',
+    description: 'Local comercial en zona de alto tránsito, perfecto para negocios.',
+    address: 'Florida 500',
     city: 'Capital Federal',
     province: 'CABA',
     price: 180000,
     currency: 'USD',
-    property_type: 'commercial',
+    type: 'commercial',
     bedrooms: 0,
     bathrooms: 1,
-    surface_total: 85,
-    surface_covered: 80,
-    expenses: 12000,
-    status: 'available',
-    images: [],
-    assigned_agents: ['agent1'],
+    surface: 80,
+    status: 'negotiation',
+    assigned_agents: ['3'],
     created_at: '2024-01-08T11:00:00Z',
-    updated_at: '2024-01-18T16:45:00Z',
-  },
+    updated_at: '2024-01-22T10:15:00Z',
+    images: ['https://via.placeholder.com/400x300'],
+    features: ['display', 'storage', 'accessible'],
+    owner: {
+      name: 'Roberto Silva',
+      phone: '+54 11 5555-9012',
+      email: 'roberto.silva@email.com'
+    }
+  }
 ];
 
 const mockAgents = [
-  { 
-    id: 'agent1', 
-    name: 'María García', 
-    email: 'maria@inmobiliaria.com',
-    phone: '+54 11 5555-1234',
-    commission: 3
-  },
-  { 
-    id: 'agent2', 
-    name: 'Carlos López', 
-    email: 'carlos@inmobiliaria.com',
-    phone: '+54 11 5555-5678',
-    commission: 3
-  },
+  { id: '1', name: 'María García' },
+  { id: '2', name: 'Carlos López' },
+  { id: '3', name: 'Ana Martínez' }
 ];
 
 export default function PropertiesPage() {
+  const router = useRouter();
   const [properties, setProperties] = useState(mockProperties);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedProperty, setSelectedProperty] = useState<string | null>(null);
-  const router = useRouter();
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -135,7 +136,7 @@ export default function PropertiesPage() {
   const filteredProperties = properties.filter(property =>
     property.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
     property.address.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    property.city.toLowerCase().includes(searchTerm.toLowerCase())
+    property.description.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handlePropertyClick = (propertyId: string) => {
@@ -159,69 +160,88 @@ export default function PropertiesPage() {
             Regresar al Dashboard
           </Button>
         </div>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <Card className="border-0 shadow-sm">
-              <CardContent className="p-4">
-                <div className="flex items-center">
-                  <div className="p-2 bg-blue-50 rounded-lg">
-                    <Home className="h-5 w-5 text-blue-600" />
-                  </div>
-                  <div className="ml-3">
-                    <h3 className="text-lg font-semibold text-gray-900">{properties.length}</h3>
-                    <p className="text-xs text-gray-500">Total Propiedades</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            
-            <Card className="border-0 shadow-sm">
-              <CardContent className="p-4">
-                <div className="flex items-center">
-                  <div className="p-2 bg-green-50 rounded-lg">
-                    <Home className="h-5 w-5 text-green-600" />
-                  </div>
-                  <div className="ml-3">
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      {properties.filter(p => p.status === 'available').length}
-                    </h3>
-                    <p className="text-xs text-gray-500">Disponibles</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            
-            <Card className="border-0 shadow-sm">
-              <CardContent className="p-4">
-                <div className="flex items-center">
-                  <div className="p-2 bg-yellow-50 rounded-lg">
-                    <Home className="h-5 w-5 text-yellow-600" />
-                  </div>
-                  <div className="ml-3">
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      {properties.filter(p => p.status === 'negotiation').length}
-                    </h3>
-                    <p className="text-xs text-gray-500">En Negociación</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            
-            <Card className="border-0 shadow-sm">
-              <CardContent className="p-4">
-                <div className="flex items-center">
-                  <div className="p-2 bg-red-50 rounded-lg">
-                    <Home className="h-5 w-5 text-red-600" />
-                  </div>
-                  <div className="ml-3">
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      {properties.filter(p => p.status === 'sold').length}
-                    </h3>
-                    <p className="text-xs text-gray-500">Vendidas</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+
+        <div className="mb-6">
+          <div className="flex justify-between items-center">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+              <input
+                type="text"
+                placeholder="Buscar propiedades..."
+                className="pl-9 pr-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-64"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+            <Button size="sm" className="h-9 px-3 text-xs">
+              <Plus className="h-3 w-3 mr-1" />
+              Nueva Propiedad
+            </Button>
           </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <Card className="border-0 shadow-sm">
+            <CardContent className="p-4">
+              <div className="flex items-center">
+                <div className="p-2 bg-blue-50 rounded-lg">
+                  <Home className="h-5 w-5 text-blue-600" />
+                </div>
+                <div className="ml-3">
+                  <h3 className="text-lg font-semibold text-gray-900">{properties.length}</h3>
+                  <p className="text-xs text-gray-500">Total Propiedades</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card className="border-0 shadow-sm">
+            <CardContent className="p-4">
+              <div className="flex items-center">
+                <div className="p-2 bg-green-50 rounded-lg">
+                  <Home className="h-5 w-5 text-green-600" />
+                </div>
+                <div className="ml-3">
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    {properties.filter(p => p.status === 'available').length}
+                  </h3>
+                  <p className="text-xs text-gray-500">Disponibles</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card className="border-0 shadow-sm">
+            <CardContent className="p-4">
+              <div className="flex items-center">
+                <div className="p-2 bg-yellow-50 rounded-lg">
+                  <Home className="h-5 w-5 text-yellow-600" />
+                </div>
+                <div className="ml-3">
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    {properties.filter(p => p.status === 'negotiation').length}
+                  </h3>
+                  <p className="text-xs text-gray-500">En Negociación</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card className="border-0 shadow-sm">
+            <CardContent className="p-4">
+              <div className="flex items-center">
+                <div className="p-2 bg-red-50 rounded-lg">
+                  <Home className="h-5 w-5 text-red-600" />
+                </div>
+                <div className="ml-3">
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    ${properties.reduce((sum, p) => sum + p.price, 0).toLocaleString('es-AR')}
+                  </h3>
+                  <p className="text-xs text-gray-500">Valor Total</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
@@ -240,71 +260,60 @@ export default function PropertiesPage() {
               filteredProperties.map((property) => (
                 <div 
                   key={property.id} 
-                  className="px-4 py-4 hover:bg-gray-50 cursor-pointer transition-colors border-b border-gray-100 last:border-b-0"
-                  onClick={() => handlePropertyClick(property.id)}
+                  className="px-4 py-4 hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-b-0"
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4">
-                      <div className="w-14 h-14 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <Home className="h-7 w-7 text-gray-400" />
+                      <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Home className="h-8 w-8 text-gray-400" />
                       </div>
                       
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center space-x-2 mb-1">
-                          <h3 className="text-sm font-semibold text-gray-900 truncate">{property.title}</h3>
+                          <h3 className="text-sm font-semibold text-gray-900">{property.title}</h3>
                           {getStatusBadge(property.status)}
                         </div>
-                        <p className="text-xs text-gray-500 mb-2 truncate">{property.address}</p>
+                        <div className="flex items-center space-x-4 text-xs text-gray-500 mb-2">
+                          <span>{property.address}</span>
+                          <span>{property.city}</span>
+                          <span>{getPropertyTypeLabel(property.type)}</span>
+                          <span>{property.bedrooms} amb</span>
+                          <span>{property.surface}m²</span>
+                        </div>
                         <div className="flex items-center space-x-4 text-xs text-gray-500">
                           <span className="flex items-center">
-                            <span className="font-medium">{getPropertyTypeLabel(property.property_type)}</span>
+                            <Users className="h-3 w-3 mr-1" />
+                            <div className="flex -space-x-1">
+                              {property.assigned_agents.slice(0, 2).map((agentId) => {
+                                const agent = mockAgents.find(a => a.id === agentId);
+                                return (
+                                  <div
+                                    key={agentId}
+                                    className="w-5 h-5 bg-blue-50 rounded-full flex items-center justify-center border border-white"
+                                  >
+                                    <span className="text-xs font-medium text-blue-600">
+                                      {agent?.name.charAt(0)}
+                                    </span>
+                                  </div>
+                                );
+                              })}
+                            </div>
                           </span>
-                          <span>{property.bedrooms} dorm</span>
-                          <span>{property.bathrooms} baños</span>
-                          <span>{property.surface_total}m²</span>
+                          <div className="text-xs text-gray-500 ml-2">
+                            {property.assigned_agents.map(agentId => {
+                              const agent = mockAgents.find(a => a.id === agentId);
+                              return agent?.name;
+                            }).join(', ')}
+                          </div>
                         </div>
                       </div>
                       
                       <div className="text-right flex-shrink-0">
                         <div className="text-lg font-bold text-blue-600">
-                          ${property.price.toLocaleString('es-AR')} {property.currency}
+                          ${property.price.toLocaleString('es-AR')}
                         </div>
-                        {property.expenses && (
-                          <div className="text-xs text-gray-500">
-                            Exp: ${property.expenses.toLocaleString('es-AR')}
-                          </div>
-                        )}
-                      </div>
-                      
-                      <div className="flex items-center space-x-2 flex-shrink-0">
-                        <div className="flex -space-x-1">
-                          {property.assigned_agents.slice(0, 2).map((agentId) => {
-                            const agent = mockAgents.find(a => a.id === agentId);
-                            return (
-                              <div
-                                key={agentId}
-                                className="w-6 h-6 bg-blue-50 rounded-full flex items-center justify-center border border-white"
-                                title={agent?.name}
-                              >
-                                <span className="text-xs font-medium text-blue-600">
-                                  {agent?.name.substring(0, 2).toUpperCase()}
-                                </span>
-                              </div>
-                            );
-                          })}
-                          {property.assigned_agents.length > 2 && (
-                            <div className="w-6 h-6 bg-gray-50 rounded-full flex items-center justify-center border border-white">
-                              <span className="text-xs font-medium text-gray-600">
-                                +{property.assigned_agents.length - 2}
-                              </span>
-                            </div>
-                          )}
-                        </div>
-                        <div className="text-xs text-gray-500 ml-2">
-                          {property.assigned_agents.map(agentId => {
-                            const agent = mockAgents.find(a => a.id === agentId);
-                            return agent?.name;
-                          }).join(', ')}
+                        <div className="text-xs text-gray-500">
+                          {property.currency}
                         </div>
                       </div>
                     </div>
@@ -313,22 +322,16 @@ export default function PropertiesPage() {
                       <Button 
                         variant="outline" 
                         size="sm"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handlePropertyClick(property.id);
-                        }}
+                        onClick={() => handlePropertyClick(property.id)}
                         className="h-8 px-3 text-xs"
                       >
                         <Eye className="h-3 w-3 mr-1" />
-                        Ver
+                        Ver Detalle
                       </Button>
                       <Button 
                         variant="outline" 
                         size="sm"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          console.log('Edit property:', property.id);
-                        }}
+                        onClick={() => console.log('Edit property:', property.id)}
                         className="h-8 px-3 text-xs"
                       >
                         <Edit className="h-3 w-3 mr-1" />
@@ -337,10 +340,7 @@ export default function PropertiesPage() {
                       <Button 
                         variant="outline" 
                         size="sm"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          console.log('Delete property:', property.id);
-                        }}
+                        onClick={() => console.log('Delete property:', property.id)}
                         className="h-8 px-3 text-xs"
                       >
                         <Trash2 className="h-3 w-3 mr-1" />
