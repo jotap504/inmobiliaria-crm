@@ -43,7 +43,6 @@
     "zod": "^3.22.0"
   },
   "devDependencies": {
-    "@types/react-native": "^0.72.0",
     "eslint": "^8.52.0",
     "eslint-config-next": "14.0.0",
     "prettier": "^3.0.0",
