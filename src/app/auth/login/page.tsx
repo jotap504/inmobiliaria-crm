@@ -36,11 +36,7 @@ export default function LoginPage() {
       setLoading(true);
       setError(null);
 
-      const { data, error } = await signIn(data.email, data.password);
-
-      if (error) {
-        throw error;
-      }
+      await signIn(data.email, data.password);
 
       // Redirigir al dashboard
       router.push('/dashboard');
