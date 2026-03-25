@@ -1,11 +1,13 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { 
   Users, 
+  Home,
   Plus,
   Search,
   Filter,
@@ -16,6 +18,7 @@ import {
   MapPin,
   Calendar
 } from 'lucide-react';
+import Navigation from '@/components/navigation';
 
 const mockSellers = [
   {
@@ -85,6 +88,7 @@ const mockSellers = [
 ];
 
 export default function SellersPage() {
+  const router = useRouter();
   const [sellers, setSellers] = useState(mockSellers);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -119,102 +123,102 @@ export default function SellersPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-14">
-            <div className="flex items-center">
-              <h1 className="text-lg font-semibold text-gray-900">Vendedores</h1>
-            </div>
-            
-            <div className="flex items-center space-x-3">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                <input
-                  type="text"
-                  placeholder="Buscar vendedores..."
-                  className="pl-9 pr-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-64"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </div>
-              <Button variant="outline" size="sm" className="h-9 px-3 text-xs">
-                <Filter className="h-3 w-3 mr-1" />
-                Filtros
-              </Button>
-              <Button size="sm" className="h-9 px-3 text-xs">
-                <Plus className="h-3 w-3 mr-1" />
-                Nuevo Vendedor
-              </Button>
-            </div>
-          </div>
-        </div>
-      </header>
+      <Navigation />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="mb-6 flex justify-between items-center">
+          <h1 className="text-2xl font-bold text-gray-900">Vendedores</h1>
+          <Button 
+            variant="outline" 
+            onClick={() => router.push('/')}
+            className="flex items-center"
+          >
+            <Home className="h-4 w-4 mr-2" />
+            Regresar al Dashboard
+          </Button>
+        </div>
+        
         <div className="mb-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <Card className="border-0 shadow-sm">
-              <CardContent className="p-4">
-                <div className="flex items-center">
-                  <div className="p-2 bg-blue-50 rounded-lg">
-                    <Users className="h-5 w-5 text-blue-600" />
-                  </div>
-                  <div className="ml-3">
-                    <h3 className="text-lg font-semibold text-gray-900">{sellers.length}</h3>
-                    <p className="text-xs text-gray-500">Total Vendedores</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            
-            <Card className="border-0 shadow-sm">
-              <CardContent className="p-4">
-                <div className="flex items-center">
-                  <div className="p-2 bg-green-50 rounded-lg">
-                    <Users className="h-5 w-5 text-green-600" />
-                  </div>
-                  <div className="ml-3">
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      {sellers.filter(s => s.status === 'active').length}
-                    </h3>
-                    <p className="text-xs text-gray-500">Activos</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            
-            <Card className="border-0 shadow-sm">
-              <CardContent className="p-4">
-                <div className="flex items-center">
-                  <div className="p-2 bg-yellow-50 rounded-lg">
-                    <Users className="h-5 w-5 text-yellow-600" />
-                  </div>
-                  <div className="ml-3">
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      ${sellers.reduce((sum, s) => sum + s.total_sales, 0).toLocaleString('es-AR')}
-                    </h3>
-                    <p className="text-xs text-gray-500">Ventas Totales</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            
-            <Card className="border-0 shadow-sm">
-              <CardContent className="p-4">
-                <div className="flex items-center">
-                  <div className="p-2 bg-purple-50 rounded-lg">
-                    <Users className="h-5 w-5 text-purple-600" />
-                  </div>
-                  <div className="ml-3">
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      {(sellers.reduce((sum, s) => sum + s.rating, 0) / sellers.length).toFixed(1)}
-                    </h3>
-                    <p className="text-xs text-gray-500">Rating Promedio</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+          <div className="flex justify-between items-center">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+              <input
+                type="text"
+                placeholder="Buscar vendedores..."
+                className="pl-9 pr-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-64"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+            <Button size="sm" className="h-9 px-3 text-xs">
+              <Plus className="h-3 w-3 mr-1" />
+              Nuevo Vendedor
+            </Button>
           </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <Card className="border-0 shadow-sm">
+            <CardContent className="p-4">
+              <div className="flex items-center">
+                <div className="p-2 bg-blue-50 rounded-lg">
+                  <Users className="h-5 w-5 text-blue-600" />
+                </div>
+                <div className="ml-3">
+                  <h3 className="text-lg font-semibold text-gray-900">{sellers.length}</h3>
+                  <p className="text-xs text-gray-500">Total Vendedores</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card className="border-0 shadow-sm">
+            <CardContent className="p-4">
+              <div className="flex items-center">
+                <div className="p-2 bg-green-50 rounded-lg">
+                  <Users className="h-5 w-5 text-green-600" />
+                </div>
+                <div className="ml-3">
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    {sellers.filter(s => s.status === 'active').length}
+                  </h3>
+                  <p className="text-xs text-gray-500">Activos</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card className="border-0 shadow-sm">
+            <CardContent className="p-4">
+              <div className="flex items-center">
+                <div className="p-2 bg-yellow-50 rounded-lg">
+                  <Users className="h-5 w-5 text-yellow-600" />
+                </div>
+                <div className="ml-3">
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    ${sellers.reduce((sum, s) => sum + s.total_sales, 0).toLocaleString('es-AR')}
+                  </h3>
+                  <p className="text-xs text-gray-500">Ventas Totales</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card className="border-0 shadow-sm">
+            <CardContent className="p-4">
+              <div className="flex items-center">
+                <div className="p-2 bg-purple-50 rounded-lg">
+                  <Users className="h-5 w-5 text-purple-600" />
+                </div>
+                <div className="ml-3">
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    {(sellers.reduce((sum, s) => sum + s.rating, 0) / sellers.length).toFixed(1)}
+                  </h3>
+                  <p className="text-xs text-gray-500">Rating Promedio</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         <div className="bg-white rounded-lg border border-gray-200 shadow-sm">

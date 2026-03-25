@@ -148,7 +148,17 @@ export default function PropertiesPage() {
       <Navigation />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div className="mb-6">
+        <div className="mb-6 flex justify-between items-center">
+          <h1 className="text-2xl font-bold text-gray-900">Propiedades</h1>
+          <Button 
+            variant="outline" 
+            onClick={() => router.push('/')}
+            className="flex items-center"
+          >
+            <Home className="h-4 w-4 mr-2" />
+            Regresar al Dashboard
+          </Button>
+        </div>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <Card className="border-0 shadow-sm">
               <CardContent className="p-4">

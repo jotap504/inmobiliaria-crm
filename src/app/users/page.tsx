@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { 
   Users, 
+  Home,
   Plus,
   Search,
   Filter,
@@ -20,9 +21,11 @@ import {
 } from 'lucide-react';
 import Navigation from '@/components/navigation';
 import { usePermissions } from '@/contexts/AuthContext';
+import { useRouter } from 'next/navigation';
 import { mockUsers, getSupervisorTeam, User } from '@/lib/auth';
 
 export default function UsersPage() {
+  const router = useRouter();
   const [users, setUsers] = useState<User[]>(mockUsers);
   const [searchTerm, setSearchTerm] = useState('');
   const { user: currentUser, isAdmin, canManageUsers } = usePermissions();
@@ -119,7 +122,17 @@ export default function UsersPage() {
       <Navigation />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div className="mb-6">
+        <div className="mb-6 flex justify-between items-center">
+          <h1 className="text-2xl font-bold text-gray-900">Usuarios</h1>
+          <Button 
+            variant="outline" 
+            onClick={() => router.push('/')}
+            className="flex items-center"
+          >
+            <Home className="h-4 w-4 mr-2" />
+            Regresar al Dashboard
+          </Button>
+        </div>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <Card className="border-0 shadow-sm">
               <CardContent className="p-4">

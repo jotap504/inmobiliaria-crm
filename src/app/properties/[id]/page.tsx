@@ -244,6 +244,18 @@ export default function PropertyDetailPage() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        {/* Back Button */}
+        <div className="mb-4">
+          <Button 
+            variant="outline" 
+            onClick={() => router.push('/')}
+            className="flex items-center"
+          >
+            <Home className="h-4 w-4 mr-2" />
+            Regresar al Dashboard
+          </Button>
+        </div>
+        
         {/* Property Summary */}
         <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-4 mb-6">
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
