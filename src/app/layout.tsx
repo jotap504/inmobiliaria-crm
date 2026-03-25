@@ -6,7 +6,7 @@ import { Providers } from './providers';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'CRM Inmobiliario Argentina',
+  title: 'Cosentino Century21',
   description: 'Sistema completo de gestión para brokers inmobiliarios en Argentina',
 };
 

@@ -52,9 +52,9 @@ export default function LoginPage() {
           <div className="mx-auto h-12 w-12 bg-blue-600 rounded-lg flex items-center justify-center mb-4">
             <Building className="h-8 w-8 text-white" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900">
-            CRM Inmobiliario
-          </h2>
+          <CardTitle className="text-2xl font-bold text-center">
+            Cosentino Century21
+          </CardTitle>
           <p className="mt-2 text-sm text-gray-600">
             Inicia sesión para acceder al sistema
           </p>
